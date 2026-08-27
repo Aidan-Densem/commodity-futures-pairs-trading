@@ -1,0 +1,66 @@
+columns:
+  timestamp: timestamp
+  ticker: ticker
+  bid: bid
+  ask: ask
+  midpoint: mid
+  close: close
+  tick_size: tick_size
+
+# A timezone must be supplied for naive text timestamps. Per-ticker entries,
+# when present, override this value. Numeric timestamp units are never guessed.
+timezone: Europe/London
+timezone_by_ticker: {}
+numeric_timestamp_unit: null
+expected_frequency: 1min
+strict_grid: false
+# A larger positive chronological gap is a separate diagnostic from grid
+# alignment. It warns by default; enable this only for a calendar-aware use.
+timing_gaps:
+  reject_large_positive_gap: false
+# False is the full-clean default: unavailable mandatory calibration cannot be
+# represented as a clean quote. True exposes partial_clean_quote separately.
+allow_partial_cleaning: false
+sample_bounds:
+  earliest: null
+  latest: null
+
+duplicates:
+  collapse_exact: true
+  reject_conflicting: true
+
+quotes:
+  reject_locked: false
+  supplied_midpoint_is_literal: false
+  reject_midpoint_inconsistency: true
+  midpoint_absolute_tolerance: 1.0e-12
+  midpoint_relative_tolerance: 1.0e-10
+
+v2:
+  minimum_calibration_quotes: 200
+  log_spread_mad_multiplier: 8
+  spread_median_multiple: 50
+  spread_empirical_quantile: 0.995
+  tick_floor_multiple: 4
+  price_return_mad_multiplier: 15
+  price_return_quantile: 0.999
+  price_quantile_multiplier: 2
+  price_relative_floor: 0.22314355131420976  # log(1.25)
+  local_reference_observations: 60
+  local_reference_minimum: 20
+  close_mid_mad_multiplier: 8
+  close_mid_empirical_quantile: 0.995
+
+# This optional rule mirrors the authoritative dissertation formula but is
+# disabled by default because vendor Close is not a literal quote midpoint.
+close_mid_consistency:
+  enabled: false
+  reject: true
+
+stale_quote:
+  enabled: true
+  run_length: 30
+  reject: false
+
+output:
+  format: parquet

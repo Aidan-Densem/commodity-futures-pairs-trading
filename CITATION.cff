@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this computational repository, please cite it using this metadata."
+title: "Reproducibility code for model-based energy-futures pairs trading"
+type: software
+abstract: "Core scientific code for an MSc Statistics dissertation on exact-contract, model-based energy-futures pairs trading."
+authors:
+  - family-names: Densem
+    given-names: Aidan

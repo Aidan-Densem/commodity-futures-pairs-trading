@@ -1,0 +1,1116 @@
+{
+  "created": "2026-07-14",
+  "data_timezone": "Europe/London",
+  "notes": [
+    "Reference metadata for historical session reconstruction; this is not a date-expanded production session-interval table.",
+    "Compiled from project records and the cited exchange/product sources.",
+    "All London conversions should be implemented with named time zones per timestamp, not static offsets, because UK/US/EU/China DST calendars differ.",
+    "Fields marked unknown/low confidence should not be used for production spread construction without Bloomberg DES/product confirmation."
+  ],
+  "instruments": [
+    {
+      "root": "BIT",
+      "generic": "BIT1",
+      "product_name": "Bitumen Futures",
+      "exchange": "Shanghai Futures Exchange (SHFE)",
+      "exchange_timezone": "Asia/Shanghai",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "BIT<month_code><year_code> Comdty; generic BIT1",
+      "instrument_type": "exchange-traded futures contract",
+      "confidence": "medium-high",
+      "session_alias": {
+        "sunday_to_monday": false,
+        "saturday_to_friday": false,
+        "notes": "Use SHFE trading date if Bloomberg supplies it; night session belongs to the following SHFE trading day."
+      },
+      "trading_hours": {
+        "source_timezone": "Asia/Shanghai",
+        "regular_weekly": "Day session 09:00-11:30 and 13:30-15:00; official SHFE search result also indicates night-session convention and bitumen night trading is typically 21:00-01:00.",
+        "london_hint": "In July/BST: 02:00-04:30, 06:30-08:00, and night 14:00-18:00 London; convert dynamically."
+      },
+      "maintenance_breaks": [
+        {
+          "name": "morning_break",
+          "start_local": "10:15",
+          "end_local": "10:30",
+          "timezone": "Asia/Shanghai",
+          "london_hint_bst": "03:15-03:30"
+        },
+        {
+          "name": "lunch_break",
+          "start_local": "11:30",
+          "end_local": "13:30",
+          "timezone": "Asia/Shanghai",
+          "london_hint_bst": "04:30-06:30"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "daily_settlement",
+          "start_local": "unknown",
+          "end_local": "unknown",
+          "timezone": "Asia/Shanghai",
+          "method": "not found from accessible official source"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "SHFE_morning_break",
+          "start": "03:15",
+          "end": "03:30",
+          "applies_days": "Mon-Fri, July/BST hint",
+          "reason": "official session break; converted from Beijing"
+        },
+        {
+          "window_name": "SHFE_lunch_break",
+          "start": "04:30",
+          "end": "06:30",
+          "applies_days": "Mon-Fri, July/BST hint",
+          "reason": "official lunch break; converted from Beijing"
+        },
+        {
+          "window_name": "SHFE_night_open_boundary",
+          "start": "13:55",
+          "end": "14:05",
+          "applies_days": "Mon-Fri, July/BST hint",
+          "reason": "inferred ±5m around night open"
+        },
+        {
+          "window_name": "SHFE_night_close_boundary",
+          "start": "17:55",
+          "end": "18:05",
+          "applies_days": "Mon-Fri, July/BST hint",
+          "reason": "inferred ±5m around night close"
+        }
+      ],
+      "holiday_calendar_url": "https://www.shfe.com.cn/eng/reports/CalendarHolidays/",
+      "ticker_alias_rules": {
+        "bloomberg_root": "BIT",
+        "contract_month_codes": "standard futures month codes",
+        "year_code_note": "Project security identifiers use a one-digit year code, e.g. BITN5."
+      },
+      "notes": [
+        "Direct access to some official SHFE source material was incomplete during compilation; session and holiday details should be checked against the cited official SHFE contract and calendar documentation when reconstructing date-expanded intervals."
+      ],
+      "sources": [
+        "https://www.shfe.com.cn/eng/Market/Futures/Energy/bu_f/ContractText/",
+        "https://www.shfe.com.cn/eng/reports/CalendarHolidays/TradingHours/"
+      ]
+    },
+    {
+      "root": "CL",
+      "generic": "CL1",
+      "product_name": "NYMEX Light Sweet Crude Oil (WTI) Futures",
+      "exchange": "NYMEX / CME Globex",
+      "exchange_timezone": "America/Chicago",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "CL<month_code><year_code> Comdty; generic CL1",
+      "instrument_type": "exchange-traded futures contract",
+      "confidence": "high",
+      "session_alias": {
+        "sunday_to_monday": true,
+        "saturday_to_friday": false
+      },
+      "trading_hours": {
+        "source_timezone": "America/Chicago",
+        "regular_weekly": "Sunday-Friday electronic trading. CL: 17:00-16:00 CT with 16:00-17:00 CT break. NG/HO/RB: 17:00-16:00 CT equivalent in contract pages, commonly shown as 18:00-17:00 ET / 17:00-16:00 CT with 60-minute break.",
+        "london_hint": "In July/BST, roughly 23:00-22:00 London with 22:00-23:00 break. Use named time-zone conversion, not fixed offsets."
+      },
+      "maintenance_breaks": [
+        {
+          "start_local": "16:00",
+          "end_local": "17:00",
+          "timezone": "America/Chicago",
+          "london_hint_bst": "22:00-23:00"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "daily_settlement",
+          "start_local": "14:28",
+          "end_local": "14:30",
+          "timezone": "America/New_York",
+          "method": "VWAP/settlement procedure from CME Globex activity; expiring contract may use 14:00-14:30 ET",
+          "london_hint_bst": "19:28-19:30"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "CME_close_boundary",
+          "start": "21:55",
+          "end": "22:05",
+          "applies_days": "Mon-Fri on normal July/BST schedule",
+          "reason": "±5m around official daily close/break start; inferred buffer"
+        },
+        {
+          "window_name": "CME_maintenance_break",
+          "start": "22:00",
+          "end": "23:00",
+          "applies_days": "Mon-Thu normal session breaks; Friday is end-of-week close",
+          "reason": "official 60-minute no-trading break; use full break if data include carry-forward points"
+        },
+        {
+          "window_name": "CME_reopen_boundary",
+          "start": "22:55",
+          "end": "23:05",
+          "applies_days": "Sun-Thu on normal July/BST schedule",
+          "reason": "±5m around official reopen; inferred buffer"
+        },
+        {
+          "window_name": "CME_settlement_marker",
+          "start": "19:28",
+          "end": "19:30",
+          "applies_days": "Mon-Fri normal July/BST conversion",
+          "reason": "official settlement period; use ±1m or ±5m buffer if needed"
+        }
+      ],
+      "holiday_calendar_url": "https://www.cmegroup.com/tools-information/holiday-calendar.html",
+      "ticker_alias_rules": {
+        "cme_globex_code": "CL",
+        "bloomberg_root": "CL",
+        "year_code_note": "Bloomberg may use one-digit year code for current decade; verify older contracts/expired tickers for two-digit year conventions."
+      },
+      "notes": [],
+      "sources": [
+        "https://www.cmegroup.com/markets/energy/crude-oil/light-sweet-crude.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/natural-gas/natural-gas.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/refined-products/heating-oil.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/refined-products/rbob-gasoline.contractSpecs.html",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457218849/NYMEX+Crude+Oil",
+        "https://cmegroupclientsite.atlassian.net/wiki/display/EPICSANDBOX/Natural+Gas",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457415161/NYMEX+Heating+Oil",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457088078/NYMEX+RBOB+Gasoline"
+      ]
+    },
+    {
+      "root": "CO",
+      "generic": "CO1",
+      "product_name": "ICE Brent Crude Futures",
+      "exchange": "ICE Futures Europe",
+      "exchange_timezone": "Europe/London",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "CO<month_code><year_code> Comdty; generic CO1",
+      "instrument_type": "exchange-traded futures contract",
+      "confidence": "high",
+      "session_alias": {
+        "sunday_to_monday": true,
+        "saturday_to_friday": false
+      },
+      "trading_hours": {
+        "source_timezone": "Europe/London",
+        "regular_weekly": "01:00-23:00 London; Sunday pre-open 22:00 and Sunday open 23:00 London; no Saturday trading indicated.",
+        "london_hint": "same as source timezone"
+      },
+      "maintenance_breaks": [
+        {
+          "start_local": "23:00",
+          "end_local": "01:00",
+          "timezone": "Europe/London",
+          "london_hint": "23:00-01:00"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "daily_settlement",
+          "start_local": "19:28",
+          "end_local": "19:30",
+          "timezone": "Europe/London",
+          "method": "weighted average of trades during two-minute settlement period",
+          "london_hint": "19:28-19:30"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "ICE_Brent_settlement",
+          "start": "19:28",
+          "end": "19:30",
+          "applies_days": "Mon-Fri",
+          "reason": "official settlement period; exact window"
+        },
+        {
+          "window_name": "ICE_oil_close_boundary",
+          "start": "22:55",
+          "end": "23:05",
+          "applies_days": "Mon-Fri",
+          "reason": "±5m around 23:00 close; inferred buffer"
+        },
+        {
+          "window_name": "ICE_oil_reopen_boundary",
+          "start": "00:55",
+          "end": "01:05",
+          "applies_days": "Mon-Fri",
+          "reason": "±5m around 01:00 open; inferred buffer"
+        },
+        {
+          "window_name": "ICE_oil_sunday_open_boundary",
+          "start": "22:55",
+          "end": "23:05",
+          "applies_days": "Sunday",
+          "reason": "±5m around Sunday 23:00 open; inferred buffer"
+        }
+      ],
+      "holiday_calendar_url": "https://www.ice.com/market-resources/expiry-calendar",
+      "ticker_alias_rules": {
+        "ice_contract_symbol": "B",
+        "bloomberg_root": "CO",
+        "year_code_note": "ICE/Bloomberg document shows COF7 <COMDTY>, CO1 <COMDTY>, active COA <COMDTY>, and spread tickers such as COQ7COU7."
+      },
+      "notes": [
+        "Expiration is last ICE business day of second month preceding contract month, with Christmas/New Year adjustments."
+      ],
+      "sources": [
+        "https://www.ice.com/products/219/Brent-Crude-Futures",
+        "https://www.ice.com/publicdocs/data/ICE_on_Bloomberg.pdf",
+        "https://www.ice.com/market-resources/expiry-calendar"
+      ]
+    },
+    {
+      "root": "EN",
+      "generic": "EN1",
+      "product_name": "ICE WTI Crude Futures",
+      "exchange": "ICE Futures Europe",
+      "exchange_timezone": "Europe/London",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "EN<month_code><year_code> Comdty; generic EN1",
+      "instrument_type": "exchange-traded futures contract",
+      "confidence": "medium-high",
+      "session_alias": {
+        "sunday_to_monday": true,
+        "saturday_to_friday": false
+      },
+      "trading_hours": {
+        "source_timezone": "Europe/London",
+        "regular_weekly": "01:00-23:00 London; Monday/Sunday open 23:00 London.",
+        "london_hint": "same as source timezone"
+      },
+      "maintenance_breaks": [
+        {
+          "start_local": "23:00",
+          "end_local": "01:00",
+          "timezone": "Europe/London",
+          "london_hint": "23:00-01:00"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "final_settlement_reference",
+          "start_local": "unknown",
+          "end_local": "unknown",
+          "timezone": "Europe/London",
+          "method": "cash-settled equal to penultimate NYMEX WTI settlement; exact daily ICE settlement window not found on product page"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "ICE_oil_close_boundary",
+          "start": "22:55",
+          "end": "23:05",
+          "applies_days": "Mon-Fri",
+          "reason": "±5m around 23:00 close; inferred buffer"
+        },
+        {
+          "window_name": "ICE_oil_reopen_boundary",
+          "start": "00:55",
+          "end": "01:05",
+          "applies_days": "Mon-Fri",
+          "reason": "±5m around 01:00 open; inferred buffer"
+        },
+        {
+          "window_name": "ICE_oil_sunday_open_boundary",
+          "start": "22:55",
+          "end": "23:05",
+          "applies_days": "Sunday",
+          "reason": "±5m around Sunday 23:00 open; inferred buffer"
+        }
+      ],
+      "holiday_calendar_url": "https://www.ice.com/market-resources/expiry-calendar",
+      "ticker_alias_rules": {
+        "ice_contract_symbol": "T",
+        "bloomberg_root": "EN in project security records; the official ICE page uses symbol T",
+        "year_code_note": "Project security identifiers use a one-digit year code, e.g. ENQ5."
+      },
+      "notes": [
+        "Identification follows project rule metadata labelled ICE WTI and the matching Bloomberg root pattern; the official ICE product page shows product symbol T rather than Bloomberg EN."
+      ],
+      "sources": [
+        "https://www.ice.com/products/213/WTI-Crude-Futures",
+        "https://www.ice.com/market-resources/expiry-calendar"
+      ]
+    },
+    {
+      "root": "FN",
+      "generic": "FN1",
+      "product_name": "ICE UK NBP Natural Gas Futures",
+      "exchange": "ICE Futures Europe",
+      "exchange_timezone": "Europe/London",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "FN<month_code><year_code> Comdty; generic FN1",
+      "instrument_type": "exchange-traded futures contract",
+      "confidence": "medium-high",
+      "session_alias": {
+        "sunday_to_monday": true,
+        "saturday_to_friday": false
+      },
+      "trading_hours": {
+        "source_timezone": "Europe/London",
+        "regular_weekly": "00:50-22:00 London; Sunday pre-open 17:40 ET/open 17:50 ET; closed Saturday.",
+        "london_hint": "Use London source hours and named ET conversion for Sunday open when needed."
+      },
+      "maintenance_breaks": [
+        {
+          "start_local": "22:00",
+          "end_local": "00:50",
+          "timezone": "Europe/London",
+          "london_hint": "22:00-00:50"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "daily_settlement",
+          "start_local": "16:05",
+          "end_local": "16:15",
+          "timezone": "Europe/London",
+          "method": "weighted average of trades; QSP if low liquidity",
+          "london_hint": "16:05-16:15"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "ICE_gas_settlement_NBP",
+          "start": "16:05",
+          "end": "16:15",
+          "applies_days": "Mon-Fri",
+          "reason": "official NBP settlement window"
+        },
+        {
+          "window_name": "ICE_gas_close_boundary",
+          "start": "21:55",
+          "end": "22:05",
+          "applies_days": "Mon-Fri",
+          "reason": "±5m around 22:00 close; inferred buffer"
+        },
+        {
+          "window_name": "ICE_gas_reopen_boundary",
+          "start": "00:45",
+          "end": "00:55",
+          "applies_days": "Mon-Fri",
+          "reason": "±5m around 00:50 open; inferred buffer"
+        },
+        {
+          "window_name": "ICE_gas_sunday_open_boundary",
+          "start": "22:45",
+          "end": "22:55",
+          "applies_days": "Sunday in July/BST hint",
+          "reason": "±5m around 17:50 ET Sunday open; inferred buffer"
+        }
+      ],
+      "holiday_calendar_url": "https://www.ice.com/market-resources/expiry-calendar",
+      "ticker_alias_rules": {
+        "ice_contract_symbol": "M",
+        "bloomberg_root": "FN in project security records; the official ICE page uses symbol M",
+        "year_code_note": "Project security identifiers use a one-digit year code, e.g. FNQ5."
+      },
+      "notes": [
+        "Last trading ceases 17:00 London local time two business days before first day of delivery period."
+      ],
+      "sources": [
+        "https://www.ice.com/products/910/UK-NBP-Natural-Gas-Futures",
+        "https://www.ice.com/market-resources/expiry-calendar"
+      ]
+    },
+    {
+      "root": "HO",
+      "generic": "HO1",
+      "product_name": "NYMEX NY Harbor ULSD Futures (Heating Oil legacy Bloomberg root)",
+      "exchange": "NYMEX / CME Globex",
+      "exchange_timezone": "America/Chicago",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "HO<month_code><year_code> Comdty; generic HO1",
+      "instrument_type": "exchange-traded futures contract",
+      "confidence": "high",
+      "session_alias": {
+        "sunday_to_monday": true,
+        "saturday_to_friday": false
+      },
+      "trading_hours": {
+        "source_timezone": "America/Chicago",
+        "regular_weekly": "Sunday-Friday electronic trading. CL: 17:00-16:00 CT with 16:00-17:00 CT break. NG/HO/RB: 17:00-16:00 CT equivalent in contract pages, commonly shown as 18:00-17:00 ET / 17:00-16:00 CT with 60-minute break.",
+        "london_hint": "In July/BST, roughly 23:00-22:00 London with 22:00-23:00 break. Use named time-zone conversion, not fixed offsets."
+      },
+      "maintenance_breaks": [
+        {
+          "start_local": "16:00",
+          "end_local": "17:00",
+          "timezone": "America/Chicago",
+          "london_hint_bst": "22:00-23:00"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "daily_settlement",
+          "start_local": "14:28",
+          "end_local": "14:30",
+          "timezone": "America/New_York",
+          "method": "VWAP/settlement procedure from CME Globex activity; expiring contract may use 14:00-14:30 ET",
+          "london_hint_bst": "19:28-19:30"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "CME_close_boundary",
+          "start": "21:55",
+          "end": "22:05",
+          "applies_days": "Mon-Fri on normal July/BST schedule",
+          "reason": "±5m around official daily close/break start; inferred buffer"
+        },
+        {
+          "window_name": "CME_maintenance_break",
+          "start": "22:00",
+          "end": "23:00",
+          "applies_days": "Mon-Thu normal session breaks; Friday is end-of-week close",
+          "reason": "official 60-minute no-trading break; use full break if data include carry-forward points"
+        },
+        {
+          "window_name": "CME_reopen_boundary",
+          "start": "22:55",
+          "end": "23:05",
+          "applies_days": "Sun-Thu on normal July/BST schedule",
+          "reason": "±5m around official reopen; inferred buffer"
+        },
+        {
+          "window_name": "CME_settlement_marker",
+          "start": "19:28",
+          "end": "19:30",
+          "applies_days": "Mon-Fri normal July/BST conversion",
+          "reason": "official settlement period; use ±1m or ±5m buffer if needed"
+        }
+      ],
+      "holiday_calendar_url": "https://www.cmegroup.com/tools-information/holiday-calendar.html",
+      "ticker_alias_rules": {
+        "cme_globex_code": "HO",
+        "bloomberg_root": "HO",
+        "year_code_note": "Bloomberg may use one-digit year code for current decade; verify older contracts/expired tickers for two-digit year conventions."
+      },
+      "notes": [],
+      "sources": [
+        "https://www.cmegroup.com/markets/energy/crude-oil/light-sweet-crude.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/natural-gas/natural-gas.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/refined-products/heating-oil.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/refined-products/rbob-gasoline.contractSpecs.html",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457218849/NYMEX+Crude+Oil",
+        "https://cmegroupclientsite.atlassian.net/wiki/display/EPICSANDBOX/Natural+Gas",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457415161/NYMEX+Heating+Oil",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457088078/NYMEX+RBOB+Gasoline"
+      ]
+    },
+    {
+      "root": "NG",
+      "generic": "NG1",
+      "product_name": "NYMEX Henry Hub Natural Gas Futures",
+      "exchange": "NYMEX / CME Globex",
+      "exchange_timezone": "America/Chicago",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "NG<month_code><year_code> Comdty; generic NG1",
+      "instrument_type": "exchange-traded futures contract",
+      "confidence": "high",
+      "session_alias": {
+        "sunday_to_monday": true,
+        "saturday_to_friday": false
+      },
+      "trading_hours": {
+        "source_timezone": "America/Chicago",
+        "regular_weekly": "Sunday-Friday electronic trading. CL: 17:00-16:00 CT with 16:00-17:00 CT break. NG/HO/RB: 17:00-16:00 CT equivalent in contract pages, commonly shown as 18:00-17:00 ET / 17:00-16:00 CT with 60-minute break.",
+        "london_hint": "In July/BST, roughly 23:00-22:00 London with 22:00-23:00 break. Use named time-zone conversion, not fixed offsets."
+      },
+      "maintenance_breaks": [
+        {
+          "start_local": "16:00",
+          "end_local": "17:00",
+          "timezone": "America/Chicago",
+          "london_hint_bst": "22:00-23:00"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "daily_settlement",
+          "start_local": "14:28",
+          "end_local": "14:30",
+          "timezone": "America/New_York",
+          "method": "VWAP/settlement procedure from CME Globex activity; expiring contract may use 14:00-14:30 ET",
+          "london_hint_bst": "19:28-19:30"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "CME_close_boundary",
+          "start": "21:55",
+          "end": "22:05",
+          "applies_days": "Mon-Fri on normal July/BST schedule",
+          "reason": "±5m around official daily close/break start; inferred buffer"
+        },
+        {
+          "window_name": "CME_maintenance_break",
+          "start": "22:00",
+          "end": "23:00",
+          "applies_days": "Mon-Thu normal session breaks; Friday is end-of-week close",
+          "reason": "official 60-minute no-trading break; use full break if data include carry-forward points"
+        },
+        {
+          "window_name": "CME_reopen_boundary",
+          "start": "22:55",
+          "end": "23:05",
+          "applies_days": "Sun-Thu on normal July/BST schedule",
+          "reason": "±5m around official reopen; inferred buffer"
+        },
+        {
+          "window_name": "CME_settlement_marker",
+          "start": "19:28",
+          "end": "19:30",
+          "applies_days": "Mon-Fri normal July/BST conversion",
+          "reason": "official settlement period; use ±1m or ±5m buffer if needed"
+        }
+      ],
+      "holiday_calendar_url": "https://www.cmegroup.com/tools-information/holiday-calendar.html",
+      "ticker_alias_rules": {
+        "cme_globex_code": "NG",
+        "bloomberg_root": "NG",
+        "year_code_note": "Bloomberg DES explicitly flags an expanded ticker-year format and shows two-digit years, e.g. NGN25 and NGF26. Any one-digit forms in intermediate metadata filenames are download/naming artefacts."
+      },
+      "notes": [
+        "Product identity and intraday files are confirmed. No substantive NG data problem remains.",
+        "Use the literal Bloomberg ticker stored with each downloaded contract rather than reconstructing it from an assumed one-digit year rule."
+      ],
+      "sources": [
+        "https://www.cmegroup.com/markets/energy/crude-oil/light-sweet-crude.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/natural-gas/natural-gas.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/refined-products/heating-oil.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/refined-products/rbob-gasoline.contractSpecs.html",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457218849/NYMEX+Crude+Oil",
+        "https://cmegroupclientsite.atlassian.net/wiki/display/EPICSANDBOX/Natural+Gas",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457415161/NYMEX+Heating+Oil",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457088078/NYMEX+RBOB+Gasoline"
+      ]
+    },
+    {
+      "root": "OQA",
+      "generic": "OQA1",
+      "product_name": "GME Oman Crude Oil Futures (formerly DME Oman Crude Oil Futures)",
+      "exchange": "Gulf Mercantile Exchange (GME; formerly Dubai Mercantile Exchange), traded on CME Globex",
+      "exchange_timezone": "Asia/Dubai",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "OQA<month_code><year_code> Comdty; generic OQA1; exchange product code OQD",
+      "instrument_type": "exchange-traded physically delivered crude-oil benchmark futures contract",
+      "confidence": "high",
+      "session_alias": {
+        "sunday_to_monday": true,
+        "saturday_to_friday": false,
+        "notes": "The Sunday 16:00 CT opening belongs to the Monday trade date."
+      },
+      "trading_hours": {
+        "source_timezone": "America/Chicago",
+        "regular_weekly": "Sunday opens 16:00 CT; Monday-Thursday opens 16:45 CT; each session closes 16:00 CT the following day, Monday-Friday.",
+        "london_hint": "Typical July/BST conversion: Sunday open 22:00, weekday reopen 22:45, daily close 22:00. Convert dynamically with America/Chicago and Europe/London."
+      },
+      "maintenance_breaks": [
+        {
+          "name": "weekday_daily_break",
+          "start_local": "16:00",
+          "end_local": "16:45",
+          "timezone": "America/Chicago",
+          "london_hint_bst": "22:00-22:45"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "Oman_marker_price",
+          "start_local": "16:30",
+          "end_local": "16:30",
+          "timezone": "Asia/Singapore",
+          "method": "GME publishes a daily Oman Marker Price for the front-month contract.",
+          "london_hint_bst": "09:30; 08:30 when London is on GMT"
+        },
+        {
+          "name": "end_of_day_settlement",
+          "start_local": "13:30",
+          "end_local": "13:30",
+          "timezone": "America/Chicago",
+          "method": "GME end-of-day settlement for all contracts, used by the clearing house for mark-to-market and variation margin.",
+          "london_hint_bst": "19:30 on the normal July/BST-CDT alignment"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "GME_daily_close_boundary",
+          "start": "21:55",
+          "end": "22:05",
+          "applies_days": "Mon-Fri on normal July/BST-CDT alignment",
+          "reason": "inferred ±5m around the official 16:00 CT close"
+        },
+        {
+          "window_name": "GME_weekday_maintenance_break",
+          "start": "22:00",
+          "end": "22:45",
+          "applies_days": "Mon-Thu on normal July/BST-CDT alignment",
+          "reason": "official weekday gap from 16:00 to 16:45 CT"
+        },
+        {
+          "window_name": "GME_weekday_reopen_boundary",
+          "start": "22:40",
+          "end": "22:50",
+          "applies_days": "Mon-Thu on normal July/BST-CDT alignment",
+          "reason": "inferred ±5m around the official 16:45 CT reopen"
+        },
+        {
+          "window_name": "GME_sunday_open_boundary",
+          "start": "21:55",
+          "end": "22:05",
+          "applies_days": "Sunday on normal July/BST-CDT alignment",
+          "reason": "inferred ±5m around the official Sunday 16:00 CT open"
+        },
+        {
+          "window_name": "GME_Oman_marker",
+          "start": "09:25",
+          "end": "09:35",
+          "applies_days": "Mon-Fri; July/BST reference",
+          "reason": "suggested ±5m buffer around the official 16:30 Singapore front-month Oman Marker Price"
+        },
+        {
+          "window_name": "GME_daily_settlement",
+          "start": "19:25",
+          "end": "19:35",
+          "applies_days": "Mon-Fri on normal July/BST-CDT alignment",
+          "reason": "suggested ±5m buffer around the official 13:30 CT end-of-day settlement"
+        }
+      ],
+      "holiday_calendar_url": "https://www.gulfmerc.com/gme-product-services/gme-trading-trading-hours-and-holiday-calendar",
+      "ticker_alias_rules": {
+        "bloomberg_root": "OQA",
+        "exchange_product_code": "OQD",
+        "bloomberg_terminal_example": "OQAU26 Comdty",
+        "venue_name_note": "Bloomberg may display DME/Gulf Mercantile Exchange; the exchange was rebranded from DME to GME in 2024."
+      },
+      "universe_treatment": {
+        "include_in_outright_pair_screening": true,
+        "recommended_action": "Retain as the Oman/Dubai sour-crude benchmark, with GME-specific session, marker and settlement exclusions."
+      },
+      "notes": [
+        "GME is headquartered in Dubai, but its official trading-hours page publishes the electronic schedule in North American Central time.",
+        "The Oman Marker Price is economically important for the front month and should be tested as a structural exclusion in high-frequency likelihood estimation."
+      ],
+      "sources": [
+        "https://www.cmegroup.com/international/partnership-resources/gme-resources.html",
+        "https://www.gulfmerc.com/gme-product-services/gme-trading-trading-hours-and-holiday-calendar",
+        "Project-held Bloomberg DES reference dated 2026-07-14 (not redistributed)"
+      ]
+    },
+    {
+      "root": "QS",
+      "generic": "QS1",
+      "product_name": "ICE Low Sulphur Gasoil Futures",
+      "exchange": "ICE Futures Europe",
+      "exchange_timezone": "Europe/London",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "QS<month_code><year_code> Comdty; generic QS1",
+      "instrument_type": "exchange-traded futures contract",
+      "confidence": "medium-high",
+      "session_alias": {
+        "sunday_to_monday": true,
+        "saturday_to_friday": false
+      },
+      "trading_hours": {
+        "source_timezone": "Europe/London",
+        "regular_weekly": "01:00-23:00 London; Sunday pre-open 22:00/open 23:00 London.",
+        "london_hint": "same as source timezone"
+      },
+      "maintenance_breaks": [
+        {
+          "start_local": "23:00",
+          "end_local": "01:00",
+          "timezone": "Europe/London",
+          "london_hint": "23:00-01:00"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "daily_settlement",
+          "start_local": "16:28",
+          "end_local": "16:30",
+          "timezone": "Europe/London",
+          "method": "weighted average of trades during two-minute settlement period",
+          "london_hint": "16:28-16:30"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "ICE_gasoil_settlement",
+          "start": "16:28",
+          "end": "16:30",
+          "applies_days": "Mon-Fri",
+          "reason": "official settlement period; exact window"
+        },
+        {
+          "window_name": "ICE_oil_close_boundary",
+          "start": "22:55",
+          "end": "23:05",
+          "applies_days": "Mon-Fri",
+          "reason": "±5m around 23:00 close; inferred buffer"
+        },
+        {
+          "window_name": "ICE_oil_reopen_boundary",
+          "start": "00:55",
+          "end": "01:05",
+          "applies_days": "Mon-Fri",
+          "reason": "±5m around 01:00 open; inferred buffer"
+        }
+      ],
+      "holiday_calendar_url": "https://www.ice.com/market-resources/expiry-calendar",
+      "ticker_alias_rules": {
+        "ice_contract_symbol": "G",
+        "bloomberg_root": "QS in project security records and market convention",
+        "year_code_note": "Project security identifiers use a one-digit year code, e.g. QSN5."
+      },
+      "notes": [
+        "Last trading ceases at 12:00 London, two business days prior to 14th calendar day of delivery month."
+      ],
+      "sources": [
+        "https://www.ice.com/products/34361119/Low-Sulphur-Gasoil-Futures",
+        "https://www.ice.com/market-resources/expiry-calendar"
+      ]
+    },
+    {
+      "root": "TZT",
+      "generic": "TZT1",
+      "product_name": "ICE Endex Dutch TTF Natural Gas Futures",
+      "exchange": "ICE Endex",
+      "exchange_timezone": "Europe/Amsterdam",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "TZT<month_code><year_code> Comdty; generic TZT1",
+      "instrument_type": "exchange-traded futures contract",
+      "confidence": "medium-high",
+      "session_alias": {
+        "sunday_to_monday": true,
+        "saturday_to_friday": false
+      },
+      "trading_hours": {
+        "source_timezone": "Europe/London for screen hours; Europe/Amsterdam/CET for delivery and last-trade rule",
+        "regular_weekly": "00:50-22:00 London; Sunday pre-open 17:40 ET/open 17:50 ET; closed Saturday.",
+        "london_hint": "same as listed screen hours; use Amsterdam/CET only for rule fields that quote CET."
+      },
+      "maintenance_breaks": [
+        {
+          "start_local": "22:00",
+          "end_local": "00:50",
+          "timezone": "Europe/London",
+          "london_hint": "22:00-00:50"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "daily_settlement",
+          "start_local": "unknown",
+          "end_local": "unknown",
+          "timezone": "Europe/London",
+          "method": "product page says EDSP is end-of-day settlement price on Last Trading Day; exact daily settlement VWAP window not found"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "ICE_gas_close_boundary",
+          "start": "21:55",
+          "end": "22:05",
+          "applies_days": "Mon-Fri",
+          "reason": "±5m around 22:00 close; inferred buffer"
+        },
+        {
+          "window_name": "ICE_gas_reopen_boundary",
+          "start": "00:45",
+          "end": "00:55",
+          "applies_days": "Mon-Fri",
+          "reason": "±5m around 00:50 open; inferred buffer"
+        },
+        {
+          "window_name": "ICE_gas_sunday_open_boundary",
+          "start": "22:45",
+          "end": "22:55",
+          "applies_days": "Sunday in July/BST hint",
+          "reason": "±5m around 17:50 ET Sunday open; inferred buffer"
+        }
+      ],
+      "holiday_calendar_url": "https://www.ice.com/market-resources/expiry-calendar",
+      "ticker_alias_rules": {
+        "ice_contract_symbol": "TFM",
+        "bloomberg_root": "TZT in project security records; the official ICE page uses symbol TFM",
+        "year_code_note": "Project security identifiers use a one-digit year code, e.g. TZTQ5."
+      },
+      "notes": [
+        "Last trading ceases 18:00 CET two UK Business Days prior to first calendar day of delivery period."
+      ],
+      "sources": [
+        "https://www.ice.com/products/27996665/Dutch-TTF-Natural-Gas-Futures",
+        "https://www.ice.com/market-resources/expiry-calendar"
+      ]
+    },
+    {
+      "root": "U6",
+      "generic": "U61",
+      "product_name": "MCX Light Sweet Crude Oil Futures (CRUDEOIL, 100 barrels)",
+      "exchange": "Multi Commodity Exchange of India (MCX)",
+      "exchange_timezone": "Asia/Kolkata",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "U6<month_code><year_code> Comdty; generic U61; MCX symbol CRUDEOIL",
+      "instrument_type": "exchange-traded INR-denominated cash-settled energy futures contract",
+      "confidence": "high",
+      "session_alias": {
+        "sunday_to_monday": false,
+        "saturday_to_friday": false,
+        "notes": "Regular trading is Monday-Friday only. MCX holidays can close only the morning or evening session, so session-level holiday metadata should be encoded explicitly."
+      },
+      "trading_hours": {
+        "source_timezone": "Asia/Kolkata",
+        "regular_weekly": "Monday-Friday 09:00-23:30 or 23:55 IST; the closing time changes according to the US daylight-saving period.",
+        "london_hint": "Typical July/BST: 04:30-19:00 London. Typical winter/GMT when the 23:55 close applies: 03:30-18:25 London. Convert dynamically because US and UK DST transition dates differ."
+      },
+      "maintenance_breaks": [],
+      "settlement_windows": [
+        {
+          "name": "final_settlement_due_date_rate",
+          "start_local": "unknown",
+          "end_local": "unknown",
+          "timezone": "Asia/Kolkata",
+          "method": "On expiry, the due date rate is the NYMEX CL front-month settlement price converted to INR using the last available RBI USDINR reference rate; the contract is cash settled."
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "MCX_open_boundary",
+          "start": "04:25",
+          "end": "04:35",
+          "applies_days": "Mon-Fri; July/BST reference",
+          "reason": "inferred ±5m around the official 09:00 IST open; compute dynamically outside BST"
+        },
+        {
+          "window_name": "MCX_close_boundary_US_DST",
+          "start": "18:55",
+          "end": "19:05",
+          "applies_days": "Mon-Fri when MCX uses the 23:30 IST close; July/BST reference",
+          "reason": "inferred ±5m around the official 23:30 IST close; DST mismatch weeks require named-zone conversion"
+        },
+        {
+          "window_name": "MCX_close_boundary_US_standard",
+          "start": "18:20",
+          "end": "18:30",
+          "applies_days": "Mon-Fri when MCX uses the 23:55 IST close; winter/GMT reference",
+          "reason": "inferred ±5m around the official 23:55 IST close; DST mismatch weeks require named-zone conversion"
+        }
+      ],
+      "holiday_calendar_url": "https://www.mcxindia.com/market-operations/trading-surveillance/trading-holidays",
+      "ticker_alias_rules": {
+        "bloomberg_root": "U6",
+        "mcx_symbol": "CRUDEOIL",
+        "bloomberg_terminal_example": "U6N26 Comdty",
+        "year_code_note": "Bloomberg DES screenshot shows a two-digit year."
+      },
+      "universe_treatment": {
+        "include_in_outright_pair_screening": true,
+        "recommended_action": "Retain only with explicit INR currency handling, MCX session alignment and session-level holiday filters."
+      },
+      "notes": [
+        "Bloomberg DES confirms a 100-barrel contract quoted in INR per barrel.",
+        "The MCX holiday calendar distinguishes morning and evening closures; empirical gap compression alone would lose information about partial trading days.",
+        "No product-specific official intraday daily-settlement calculation window was located in the cited contract specification, so no routine settlement-window exclusion has been asserted.",
+        "Cross-market pairs against USD-denominated contracts require a defensible FX treatment or a clear interpretation of the embedded INR conversion."
+      ],
+      "sources": [
+        "https://www.mcxindia.com/products/energy/crude-oil",
+        "https://www.mcxindia.com/docs/default-source/products/contract-specification/crude-oil/crude-oil-january-2026-contract-onwards267be8c1-650a-4baa-aabd-ffcc9364c100.pdf",
+        "https://www.mcxindia.com/market-operations/trading-surveillance/trading-holidays",
+        "Project-held Bloomberg DES reference dated 2026-07-14 (not redistributed)"
+      ]
+    },
+    {
+      "root": "XB",
+      "generic": "XB1",
+      "product_name": "NYMEX RBOB Gasoline Futures",
+      "exchange": "NYMEX / CME Globex",
+      "exchange_timezone": "America/Chicago",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "XB<month_code><year_code> Comdty; generic XB1",
+      "instrument_type": "exchange-traded futures contract",
+      "confidence": "high",
+      "session_alias": {
+        "sunday_to_monday": true,
+        "saturday_to_friday": false
+      },
+      "trading_hours": {
+        "source_timezone": "America/Chicago",
+        "regular_weekly": "Sunday-Friday electronic trading. CL: 17:00-16:00 CT with 16:00-17:00 CT break. NG/HO/RB: 17:00-16:00 CT equivalent in contract pages, commonly shown as 18:00-17:00 ET / 17:00-16:00 CT with 60-minute break.",
+        "london_hint": "In July/BST, roughly 23:00-22:00 London with 22:00-23:00 break. Use named time-zone conversion, not fixed offsets."
+      },
+      "maintenance_breaks": [
+        {
+          "start_local": "16:00",
+          "end_local": "17:00",
+          "timezone": "America/Chicago",
+          "london_hint_bst": "22:00-23:00"
+        }
+      ],
+      "settlement_windows": [
+        {
+          "name": "daily_settlement",
+          "start_local": "14:28",
+          "end_local": "14:30",
+          "timezone": "America/New_York",
+          "method": "VWAP/settlement procedure from CME Globex activity; expiring contract may use 14:00-14:30 ET",
+          "london_hint_bst": "19:28-19:30"
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "CME_close_boundary",
+          "start": "21:55",
+          "end": "22:05",
+          "applies_days": "Mon-Fri on normal July/BST schedule",
+          "reason": "±5m around official daily close/break start; inferred buffer"
+        },
+        {
+          "window_name": "CME_maintenance_break",
+          "start": "22:00",
+          "end": "23:00",
+          "applies_days": "Mon-Thu normal session breaks; Friday is end-of-week close",
+          "reason": "official 60-minute no-trading break; use full break if data include carry-forward points"
+        },
+        {
+          "window_name": "CME_reopen_boundary",
+          "start": "22:55",
+          "end": "23:05",
+          "applies_days": "Sun-Thu on normal July/BST schedule",
+          "reason": "±5m around official reopen; inferred buffer"
+        },
+        {
+          "window_name": "CME_settlement_marker",
+          "start": "19:28",
+          "end": "19:30",
+          "applies_days": "Mon-Fri normal July/BST conversion",
+          "reason": "official settlement period; use ±1m or ±5m buffer if needed"
+        }
+      ],
+      "holiday_calendar_url": "https://www.cmegroup.com/tools-information/holiday-calendar.html",
+      "ticker_alias_rules": {
+        "cme_globex_code": "RB (CME Globex), XB (Bloomberg)",
+        "bloomberg_root": "XB",
+        "year_code_note": "Bloomberg may use one-digit year code for current decade; verify older contracts/expired tickers for two-digit year conventions."
+      },
+      "notes": [],
+      "sources": [
+        "https://www.cmegroup.com/markets/energy/crude-oil/light-sweet-crude.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/natural-gas/natural-gas.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/refined-products/heating-oil.contractSpecs.html",
+        "https://www.cmegroup.com/markets/energy/refined-products/rbob-gasoline.contractSpecs.html",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457218849/NYMEX+Crude+Oil",
+        "https://cmegroupclientsite.atlassian.net/wiki/display/EPICSANDBOX/Natural+Gas",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457415161/NYMEX+Heating+Oil",
+        "https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457088078/NYMEX+RBOB+Gasoline"
+      ]
+    },
+    {
+      "root": "ZS",
+      "generic": "ZS1",
+      "product_name": "MCX Natural Gas Futures (NATURALGAS, 1,250 MMBtu)",
+      "exchange": "Multi Commodity Exchange of India (MCX)",
+      "exchange_timezone": "Asia/Kolkata",
+      "data_timezone": "Europe/London",
+      "bloomberg_style_ticker": "ZS<month_code><year_code> Comdty; generic ZS1; MCX symbol NATURALGAS",
+      "instrument_type": "exchange-traded INR-denominated cash-settled energy futures contract",
+      "confidence": "high",
+      "session_alias": {
+        "sunday_to_monday": false,
+        "saturday_to_friday": false,
+        "notes": "Regular trading is Monday-Friday only. MCX holidays can close only the morning or evening session, so session-level holiday metadata should be encoded explicitly."
+      },
+      "trading_hours": {
+        "source_timezone": "Asia/Kolkata",
+        "regular_weekly": "Monday-Friday 09:00-23:30 or 23:55 IST; the closing time changes according to the US daylight-saving period.",
+        "london_hint": "Typical July/BST: 04:30-19:00 London. Typical winter/GMT when the 23:55 close applies: 03:30-18:25 London. Convert dynamically because US and UK DST transition dates differ."
+      },
+      "maintenance_breaks": [],
+      "settlement_windows": [
+        {
+          "name": "final_settlement_due_date_rate",
+          "start_local": "unknown",
+          "end_local": "unknown",
+          "timezone": "Asia/Kolkata",
+          "method": "On expiry, the due date rate is the NYMEX NG front-month settlement price converted to INR using the last available RBI USDINR reference rate; the contract is cash settled."
+        }
+      ],
+      "structural_exclusion_windows_london": [
+        {
+          "window_name": "MCX_open_boundary",
+          "start": "04:25",
+          "end": "04:35",
+          "applies_days": "Mon-Fri; July/BST reference",
+          "reason": "inferred ±5m around the official 09:00 IST open; compute dynamically outside BST"
+        },
+        {
+          "window_name": "MCX_close_boundary_US_DST",
+          "start": "18:55",
+          "end": "19:05",
+          "applies_days": "Mon-Fri when MCX uses the 23:30 IST close; July/BST reference",
+          "reason": "inferred ±5m around the official 23:30 IST close; DST mismatch weeks require named-zone conversion"
+        },
+        {
+          "window_name": "MCX_close_boundary_US_standard",
+          "start": "18:20",
+          "end": "18:30",
+          "applies_days": "Mon-Fri when MCX uses the 23:55 IST close; winter/GMT reference",
+          "reason": "inferred ±5m around the official 23:55 IST close; DST mismatch weeks require named-zone conversion"
+        }
+      ],
+      "holiday_calendar_url": "https://www.mcxindia.com/market-operations/trading-surveillance/trading-holidays",
+      "ticker_alias_rules": {
+        "bloomberg_root": "ZS",
+        "mcx_symbol": "NATURALGAS",
+        "bloomberg_terminal_example": "ZSN26 Comdty",
+        "year_code_note": "Bloomberg DES screenshot shows a two-digit year."
+      },
+      "universe_treatment": {
+        "include_in_outright_pair_screening": true,
+        "recommended_action": "Retain only with explicit INR currency handling, MCX session alignment and session-level holiday filters."
+      },
+      "notes": [
+        "Bloomberg DES confirms a 1,250 MMBtu contract quoted in INR per MMBtu.",
+        "The MCX holiday calendar distinguishes morning and evening closures; empirical gap compression alone would lose information about partial trading days.",
+        "No product-specific official intraday daily-settlement calculation window was located in the cited contract specification, so no routine settlement-window exclusion has been asserted.",
+        "Cross-market pairs against USD-denominated contracts require a defensible FX treatment or a clear interpretation of the embedded INR conversion."
+      ],
+      "sources": [
+        "https://www.mcxindia.com/products/energy/natural-gas",
+        "https://www.mcxindia.com/docs/default-source/products/contract-specification/natural-gas/natural-gas-january-2025-contract-onwardse3c71b50-1e45-4513-ac73-76cf7a894681.pdf",
+        "https://www.mcxindia.com/market-operations/trading-surveillance/trading-holidays",
+        "Project-held Bloomberg DES reference dated 2026-07-14 (not redistributed)"
+      ]
+    }
+  ],
+  "schema_version": "2.0",
+  "revised": "2026-07-14",
+  "revision_notes": [
+    "Incorporates project-held Bloomberg DES reference material dated 14 July 2026 for CH, COT, HB, NG, OQA, U6, XBW and ZS.",
+    "Instrument records retain their documented structural-window definitions and uncertainty flags.",
+    "CH and HB are option-support clone/mirror chains rather than independent commodity exposures; XBW is a Bloomberg-constructed alias of XB; COT is Brent TAS rather than an outright Brent price.",
+    "London clock times remain reference conversions. Production code should construct boundaries from named source time zones and date-specific DST rules."
+  ],
+  "universe_resolution": {
+    "exclude_from_outright_pair_screening": {
+      "CH": "Clone of NY Harbor ULSD futures used to house crack-spread options; canonical outright root is HO.",
+      "COT": "ICE Brent Trade-at-Settlement differential, not an outright futures price; values may be zero or negative and should not be log-transformed as an outright price.",
+      "HB": "Mirror of current NYMEX WTI crude futures used solely to price European-style options; canonical outright root is CL."
+    },
+    "deduplicate": {
+      "XBW": "Bloomberg-constructed series representing NYMEX RBOB gasoline XB from October 2006 onward; canonical root is XB."
+    },
+    "retain_with_market_structure_flags": {
+      "OQA": "GME Oman crude benchmark; retain as an outright crude future.",
+      "U6": "MCX INR-denominated WTI-linked crude future; retain only with explicit currency/session treatment.",
+      "ZS": "MCX INR-denominated Henry-Hub-linked natural-gas future; retain only with explicit currency/session treatment."
+    }
+  }
+}

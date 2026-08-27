@@ -1,0 +1,14 @@
+root,generic,product_name,venue,quotation_currency,pnl_currency,contract_quantity,contract_unit,price_quotation,point_value_native_per_displayed_point,minimum_price_increment_displayed,tick_value_native,session_metadata_root,notes
+CO,CO1,Brent Crude Futures,ICE Futures Europe,USD,USD,1000,barrels,USD per barrel,1000,0.01,10,CO,Root-level public summary; exact delivery-contract metadata remains licensed external input.
+CL,CL1,Light Sweet Crude Oil (WTI) Futures,NYMEX / CME Globex,USD,USD,1000,barrels,USD per barrel,1000,0.01,10,CL,Root-level public summary; exact delivery-contract metadata remains licensed external input.
+HO,HO1,NY Harbor ULSD Futures,NYMEX / CME Globex,USD,USD,42000,gallons,US cents per gallon,420,0.01,4.20,HO,Displayed-price convention is cents per gallon.
+XB,XB1,RBOB Gasoline Futures,NYMEX / CME Globex,USD,USD,42000,gallons,US cents per gallon,420,0.01,4.20,XB,Displayed-price convention is cents per gallon.
+NG,NG1,Henry Hub Natural Gas Futures,NYMEX / CME Globex,USD,USD,10000,MMBtu,USD per MMBtu,10000,0.001,10,NG,Root-level public summary; exact delivery-contract metadata remains licensed external input.
+QS,QS1,Low Sulphur Gasoil Futures,ICE Futures Europe,USD,USD,100,metric tonnes,USD per metric tonne,100,0.25,25,QS,Root-level public summary; exact delivery-contract metadata remains licensed external input.
+EN,EN1,WTI Crude Futures,ICE Futures Europe,USD,USD,1000,barrels,USD per barrel,1000,0.01,10,EN,Root-level public summary; exact delivery-contract metadata remains licensed external input.
+OQA,OQA1,Oman Crude Oil Futures,Gulf Mercantile Exchange / DME,USD,USD,1000,barrels,USD per barrel,1000,0.01,10,OQA,Root-level public summary; exact delivery-contract metadata remains licensed external input.
+FN,FN1,UK NBP Natural Gas Futures,ICE Futures Europe,GBP,GBP,month-specific 28000-31000,therms,GBp per therm,month-specific GBP 280-310,0.01,month-specific GBP 2.80-3.10,FN,Exact month quantity is required from the licensed contract-specification input.
+TZT,TZT1,Dutch TTF Natural Gas Futures,ICE Endex,EUR,EUR,month-specific 672-745,MWh,EUR per MWh,month-specific EUR 672-745,0.005,month-specific EUR 3.360-3.725,TZT,Exact month quantity is required from the licensed contract-specification input.
+BIT,BIT1,Petroleum Bitumen Futures,Shanghai Futures Exchange,CNY,CNY,10,metric tonnes,CNY per metric tonne,10,1,10,BIT,Root-level public summary; exact delivery-contract metadata remains licensed external input.
+U6,U61,Crude Oil Futures,Multi Commodity Exchange of India,INR,INR,100,barrels,INR per barrel,100,1,100,U6,Root-level public summary; exact delivery-contract metadata remains licensed external input.
+ZS,ZS1,Natural Gas Futures,Multi Commodity Exchange of India,INR,INR,1250,MMBtu,INR per MMBtu,1250,0.10,125,ZS,Root-level public summary; exact delivery-contract metadata remains licensed external input.
