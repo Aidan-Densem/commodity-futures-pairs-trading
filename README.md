@@ -42,17 +42,6 @@ The repository does not include the date-expanded exact-contract session interva
 
 The U6/ZS rate is verified against MCX Circular `MCX/F&A/631/2024`, preserved in an official MCX corporate filing with BSE. See [`docs/DATA_LINEAGE.md`](docs/DATA_LINEAGE.md) and [`data/INPUT_MANIFEST.csv`](data/INPUT_MANIFEST.csv).
 
-## Smoke tests
-
-From the repository root, using an environment satisfying both package manifests:
-
-```sh
-export PYTHON=/path/to/python3.9
-Rscript tests/smoke/run_smoke_tests.R
-```
-
-Smoke tests clear all empirical authority variables and use synthetic fixtures only.
-
 ## Full core pipeline
 
 After constructing the required date-expanded session table and placing authorised inputs under one directory:
